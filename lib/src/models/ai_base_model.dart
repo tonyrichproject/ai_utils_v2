@@ -457,10 +457,6 @@ class AiBaseItem {
     return true;
   }
 
-  void printing2() {
-    debug('printing');
-  }
-
   bool copyFrom(dynamic aSource, {bool aClearBeforeCopy = true}) {
     if (assigned(aSource) && aSource.runtimeType == this.runtimeType) {
       if (aClearBeforeCopy) clearData();
