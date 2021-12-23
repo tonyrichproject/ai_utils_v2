@@ -405,6 +405,8 @@ typedef OnItemSelectNotifyEvent = void Function(AiBaseItem selectItem);
 /// ------------------------------------ Non-Nullable Version ------------------------------------------------
 /// ----------------------------------------------------------------------------------------------------------
 /// ----------------------------------------------------------------------------------------------------------
+///
+/// Non-Nullable version supported here
 
 class AiBaseItem {
   int? id = 0;
@@ -453,6 +455,10 @@ class AiBaseItem {
     this.id = source.id;
     this.tag = source.tag;
     return true;
+  }
+
+  void printing2() {
+    debug('printing');
   }
 
   bool copyFrom(dynamic aSource, {bool aClearBeforeCopy = true}) {
