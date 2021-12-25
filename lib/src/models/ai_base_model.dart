@@ -141,6 +141,11 @@ class AiBaseItem {
   void debug(dynamic aObject) {
     if (AiDebugger.instance.isLogEnabled && assigned(aObject)) print('Debugging from AI Class name : ${this.runtimeType} - $aObject');
   }
+
+  @protected
+  void internalPrintItem() => debug('Item Index $index');
+
+  void printItem() => internalPrintItem();
 }
 
 // void testing() {
@@ -292,8 +297,10 @@ class AiBaseList extends AiBaseItem {
 
   void printItems() {
     if (AiDebugger.instance.isLogEnabled && this.isNotEmpty) {
+      print('Debugging from AI Base List : ${this.runtimeType}');
       for (var i = 0; i < count; i++) {
-        print('Debugging from AI Base List : ${this.runtimeType} -> Item Class ${getItem(i)!.runtimeType} Index : ${getItem(i)!.index}');
+        getItem(i)!.printItem();
+        // print('Debugging from AI Base List : ${this.runtimeType} -> Item Class ${getItem(i)!.runtimeType} Index : ${getItem(i)!.index}');
       }
     }
   }
