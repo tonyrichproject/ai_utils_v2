@@ -18,8 +18,8 @@ class AiBaseItem {
 
   @protected
   void internalDoOnSelectItemEvent(AiBaseItem aSelectItem) {
-    onSelectItemEvent!(aSelectItem);
-    // if (assigned(onSelectItemEvent)) onSelectItemEvent!(aSelectItem);
+    // onSelectItemEvent!(aSelectItem);
+    if (assigned(onSelectItemEvent)) onSelectItemEvent!(aSelectItem);
   }
 
   void notifyEvent() {
