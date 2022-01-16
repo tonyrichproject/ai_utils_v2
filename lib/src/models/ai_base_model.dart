@@ -279,7 +279,14 @@ class AiBaseList extends AiBaseItem {
   }
 
   // Transfer methods and properties
-  void clear() => items.clear();
+  void clear() {
+    items.clear();
+    doOnListChanged();
+  }
+
+  // Release on list change notify event
+  void releaseListChangedEvent() => this.onListChangedEvent = null;
+
   int get length => items.length;
   int get count => this.length;
   bool get isEmpty => items.isEmpty;
