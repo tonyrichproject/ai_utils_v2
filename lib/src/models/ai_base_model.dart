@@ -5,10 +5,12 @@ import 'dart:convert';
 import '../utils/ai_basic_utils.dart';
 
 typedef OnItemSelectNotifyEvent = void Function(AiBaseItem selectItem);
+typedef OnListChangedNotifyEvent = void Function(AiBaseList list);
 
 /// ------------------------------------ Ai Base Classes -----------------------------------------------------
 /// ------------------------------------ Non-Nullable Version ------------------------------------------------
 
+/// Ai Base Item ---------------------------------------------------------------------------------------------
 class AiBaseItem {
   int? id = 0;
   int? tag = 0;
@@ -18,18 +20,24 @@ class AiBaseItem {
 
   @protected
   void internalDoOnSelectItemEvent(AiBaseItem aSelectItem) {
-    // onSelectItemEvent!(aSelectItem);
-    if (assigned(onSelectItemEvent)) onSelectItemEvent!(aSelectItem);
+    onSelectItemEvent!(aSelectItem);
+    // if (assigned(onSelectItemEvent)) onSelectItemEvent!(aSelectItem);
+  }
+
+  void doOnSelectItemNotifyEvent(AiBaseItem aSelectItem) {
+    if (assigned(onSelectItemEvent)) internalDoOnSelectItemEvent(aSelectItem);
   }
 
   void notifyEvent() {
     // if object is an item that has owner then
     // raise event to owner list by this object
     if (owner != null && owner is AiBaseItem)
-      (owner as AiBaseItem).internalDoOnSelectItemEvent(this);
+      // (owner as AiBaseItem).internalDoOnSelectItemEvent(this);
+      (owner as AiBaseItem).doOnSelectItemNotifyEvent(this);
     else
       // else just raise event
-      internalDoOnSelectItemEvent(this);
+      // internalDoOnSelectItemEvent(this);
+      doOnSelectItemNotifyEvent(this);
   }
 
   // Basic Constructor
@@ -148,14 +156,11 @@ class AiBaseItem {
   void printItem() => internalPrintItem();
 }
 
-// void testing() {
-//   var obj;
-//   var aiBaseList = AiBaseList()..isEqualTo(obj);
-// }
-
+/// Ai Base List -----------------------------------------------------------------------------------------------
 class AiBaseList extends AiBaseItem {
+  OnListChangedNotifyEvent? onListChangedEvent;
   // Constructor pass id and tag to base class
-  AiBaseList({int? id = 0, int? tag = 0}) : super(id: id, tag: tag);
+  AiBaseList({int? id = 0, int? tag = 0, this.onListChangedEvent}) : super(id: id, tag: tag);
 
   // Named constructor that pass paramaters to super.createWithEvent
   AiBaseList.createWithEvent(OnItemSelectNotifyEvent onSelectItemEvent, {int? id, int? tag})
@@ -170,11 +175,6 @@ class AiBaseList extends AiBaseItem {
   List<AiBaseItem> getObjList() => <AiBaseItem>[];
 
   List<AiBaseItem> get items => _objList;
-
-  // List<AiBaseItem> get items {
-  //   if (_objList == null) _objList = getObjList();
-  //   return _objList;
-  // }
 
   // set items(List<AiBaseItem> aList) => _objList = aList;
   @protected
@@ -270,18 +270,44 @@ class AiBaseList extends AiBaseItem {
     return null;
   }
 
+  @protected
+  void internalDoOnListChanged() => onListChangedEvent!(this);
+
+  void doOnListChanged() {
+    // Check if assigned on list change event then raise event
+    if (assigned(onListChangedEvent)) internalDoOnListChanged();
+  }
+
   // Transfer methods and properties
   void clear() => items.clear();
   int get length => items.length;
   int get count => this.length;
   bool get isEmpty => items.isEmpty;
   bool get isNotEmpty => items.isNotEmpty;
-  bool remove(AiBaseItem aItem) => items.remove(aItem);
-  AiBaseItem removeAt(int aIndex) => items.removeAt(aIndex);
+
+  bool remove(AiBaseItem aItem) {
+    // try to remove item from list
+    bool result = items.remove(aItem);
+    // if remove success then notify list change event
+    if (result) doOnListChanged();
+    // return remove result
+    return result;
+  }
+
+  AiBaseItem removeAt(int aIndex) {
+    // try remove at index from items
+    var result = items.removeAt(aIndex);
+    // if result != null
+    if (assigned(result)) doOnListChanged();
+    // return result;
+    return result;
+  }
 
   void addItem(AiBaseItem item) {
     items.add(item);
     item.owner = this;
+    // Notify list change event
+    doOnListChanged();
   }
 
   AiBaseItem addNewObjItem() {
@@ -306,7 +332,7 @@ class AiBaseList extends AiBaseItem {
   }
 }
 
-/// ----------------------------------------------------------------------------------------------------------
+/// Ai Http Item Loader Mixin ----------------------------------------------------------------------------------------------
 mixin AiHttpItemLoaderMixin on AiBaseItem {
   bool canLoadFromMap(Map<String, dynamic>? aMap, List<String> aKeys) {
     var valid = (aMap != null) && (aKeys.isNotEmpty);
@@ -333,7 +359,7 @@ mixin AiHttpItemLoaderMixin on AiBaseItem {
   }
 }
 
-/// ----------------------------------------------------------------------------------------------------------
+/// Ai Http List Loader Mixin ---------------------------------------------------------------------------------
 mixin AiHttpListLoaderMixin on AiBaseList {
   // implement load from http response list
   loadFromHttpData(http.Response aResponseList, [bool aIsClearBeforeLoad = true]) {
@@ -345,7 +371,7 @@ mixin AiHttpListLoaderMixin on AiBaseList {
   }
 }
 
-/// ----------------------------------------------------------------------------------------------------------
+/// Ai Map Exporter Mixin -------------------------------------------------------------------------------------
 mixin AiMapExporterMixin on AiBaseItem {
   @protected
   Map<String, dynamic> internalGetDataAsMap() => {
@@ -356,7 +382,7 @@ mixin AiMapExporterMixin on AiBaseItem {
   Map<String, dynamic> get dataAsMap => internalGetDataAsMap();
 }
 
-/// ----------------------------------------------------------------------------------------------------------
+/// Ai Data To Http Param Mixin -------------------------------------------------------------------------------
 mixin AiDataToHttpParamMixin on AiBaseItem {
   @protected
   String internalGetDataAsHttpParam() => '';
@@ -365,7 +391,7 @@ mixin AiDataToHttpParamMixin on AiBaseItem {
   String get dataAsHttpParam => internalGetDataAsHttpParam();
 }
 
-/// ----------------------------------------------------------------------------------------------------------
+/// Ai Basic Item ---------------------------------------------------------------------------------------------
 class AiBasicItem extends AiBaseItem with AiHttpItemLoaderMixin, AiMapExporterMixin {
   // Constructor
   AiBasicItem({int? id, int? tag}) : super(id: id, tag: tag);
@@ -375,11 +401,15 @@ class AiBasicItem extends AiBaseItem with AiHttpItemLoaderMixin, AiMapExporterMi
       : super.createWithEvent(onSelectItemEvent, id: id, tag: tag);
 }
 
-/// ----------------------------------------------------------------------------------------------------------
+/// Ai Basic List ------------------------------------------------------------------------------------------
 /// subclass should be inherit from AiBasicList
 class AiBasicList extends AiBaseList with AiHttpListLoaderMixin, AiMapExporterMixin {
   // Constructor
-  AiBasicList({int? id, int? tag}) : super(id: id, tag: tag);
+  AiBasicList({
+    int? id,
+    int? tag,
+    OnListChangedNotifyEvent? onListChangedEvent,
+  }) : super(id: id, tag: tag, onListChangedEvent: onListChangedEvent);
 
   // Named Constructor : create list with event link
   AiBasicList.createWithEvent(OnItemSelectNotifyEvent onSelectItemEvent, {int? id, int? tag})
@@ -403,7 +433,7 @@ class AiBasicList extends AiBaseList with AiHttpListLoaderMixin, AiMapExporterMi
   }
 }
 
-/// ----------------------------------------------------------------------------------------------------------
+/// Ai Debugger ------------------------------------------------------------------------------------------------
 class AiDebugger extends AiBasicItem {
   // static bool logEnabled = true;
 
