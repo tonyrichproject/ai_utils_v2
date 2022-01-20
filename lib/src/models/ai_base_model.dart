@@ -292,12 +292,19 @@ class AiBaseList extends AiBaseItem {
   bool get isEmpty => items.isEmpty;
   bool get isNotEmpty => items.isNotEmpty;
 
+  // bool remove(AiBaseItem aItem) {
+  //   // try to remove item from list
+  //   bool result = items.remove(aItem);
+  //   // if remove success then notify list change event
+  //   if (result) doOnListChanged();
+  //   // return remove result
+  //   return result;
+  // }
+
   bool remove(AiBaseItem aItem) {
-    // try to remove item from list
-    bool result = items.remove(aItem);
-    // if remove success then notify list change event
-    if (result) doOnListChanged();
-    // return remove result
+    var revItem = removeAt(aItem.index);
+    bool result = assigned(revItem);
+    if (result) items.remove(revItem);
     return result;
   }
 
