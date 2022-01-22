@@ -74,6 +74,24 @@ class AiBaseItem {
       return false;
   }
 
+  // @protected
+  // bool internalIsValidClassForTry(dynamic aSource) => aSource is AiBaseItem;
+
+  @protected
+  internalTryCopyFrom(dynamic aSource) {
+    // to be implemented
+  }
+
+  bool tryCopyFrom(dynamic aSource, {bool aClearBeforeCopy = true}) {
+    bool result = false;
+    if (assigned(aSource) && aSource is AiBaseItem) {
+      if (aClearBeforeCopy) clearData();
+      result = internalCopyFrom(aSource);
+      if (result) internalTryCopyFrom(aSource);
+    }
+    return result;
+  }
+
   @protected
   bool internalCloneFrom(AiBaseItem aAiSource) {
     bool result = copyFrom(aAiSource, aClearBeforeCopy: true);
