@@ -40,6 +40,9 @@ class AiBaseItem {
       doOnSelectItemNotifyEvent(this);
   }
 
+  @protected
+  bool isSameClass(dynamic aSourceObj) => aSourceObj.runtimeType == this.runtimeType;
+
   // Basic Constructor
   AiBaseItem({this.id = 0, this.tag = 0});
 
@@ -455,9 +458,8 @@ class AiBasicItem extends AiBaseItem with AiHttpItemLoaderMixin, AiMapExporterMi
     if (!result && assigned(aSource)) {
       if (aClearBeforeCopy) clearData();
       // try to copy only the properties that are the same
-      // if (aSource is AiBaseItem) result = internalCopyFrom(aSource);
-      if (aSource is AiBaseItem) result = super.internalCopyFrom(aSource);
-      // if (result && aSource.runtimeType == aSource
+      // but in sub class has to check isSameClass before down casting object
+      if (aSource is AiBaseItem) result = internalCopyFrom(aSource);
     }
     return result;
   }
