@@ -74,6 +74,19 @@ class AiBaseItem {
       return false;
   }
 
+  // bool copyFrom2(dynamic aSource, {bool aClearBeforeCopy = true}) {
+  //   if (assigned(aSource)) {
+  //     // bool valid = false;
+
+  //     if (aClearBeforeCopy) clearData();
+
+  //     if (aSource.runtimeType == this.runtimeType) return internalCopyFrom(aSource);
+  //     else if (aSource is AiBaseItem) {
+  //       super.internalCopyFrom(aSource);
+  //     }
+  //   } else return false;
+  // }
+
   // @protected
   // bool internalIsValidClassForTry(dynamic aSource) => aSource is AiBaseItem;
 
@@ -431,6 +444,21 @@ class AiBasicItem extends AiBaseItem with AiHttpItemLoaderMixin, AiMapExporterMi
   // Name Constructor creat with event notification
   AiBasicItem.createWithEvent(OnItemSelectNotifyEvent onSelectItemEvent, {int? id, int? tag})
       : super.createWithEvent(onSelectItemEvent, id: id, tag: tag);
+
+  /// Override copy from function in AiBaseItem to
+  /// has ability to copy from the super class
+  @override
+  bool copyFrom(aSource, {bool aClearBeforeCopy = true}) {
+    // try to call copy from function in super class to see if source and this is the same class
+    bool result = super.copyFrom(aSource, aClearBeforeCopy: aClearBeforeCopy);
+    // if source and this is not the same class
+    if (!result && assigned(aSource)) {
+      if (aClearBeforeCopy) clearData();
+      // try to copy only the properties that are the same
+      if (aSource is AiBaseItem) result = super.internalCopyFrom(aSource);
+    }
+    return result;
+  }
 }
 
 /// Ai Basic List ------------------------------------------------------------------------------------------
@@ -481,7 +509,6 @@ class AiDebugger extends AiBasicItem {
 }
 
 /// ----------------------------------------------------------------------------------------------------------
-
 
 /// ----------------------------------------------------------------------------------------------------------
 // class AiBaseItem {
