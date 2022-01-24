@@ -455,7 +455,9 @@ class AiBasicItem extends AiBaseItem with AiHttpItemLoaderMixin, AiMapExporterMi
     if (!result && assigned(aSource)) {
       if (aClearBeforeCopy) clearData();
       // try to copy only the properties that are the same
-      if (aSource is AiBaseItem) result = internalCopyFrom(aSource);
+      // if (aSource is AiBaseItem) result = internalCopyFrom(aSource);
+      if (aSource is AiBaseItem) result = super.internalCopyFrom(aSource);
+      // if (result && aSource.runtimeType == aSource
     }
     return result;
   }
