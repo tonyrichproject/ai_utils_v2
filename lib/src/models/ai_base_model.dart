@@ -41,7 +41,7 @@ class AiBaseItem {
   }
 
   @protected
-  bool isSameClass(dynamic aSourceObj) => aSourceObj.runtimeType == this.runtimeType;
+  bool isSameClass(dynamic aSource) => aSource.runtimeType == this.runtimeType;
 
   // Basic Constructor
   AiBaseItem({this.id = 0, this.tag = 0});
