@@ -307,6 +307,7 @@ class AiBaseList extends AiBaseItem {
   @protected
   void internalDoOnListChanged() => onListChangedEvent!(this);
 
+  @protected
   void doOnListChanged() {
     // Check if assigned on list change event then raise event
     if (assigned(onListChangedEvent)) internalDoOnListChanged();
