@@ -12,6 +12,12 @@ abstract class AiBaseStatelessWidget extends StatelessWidget {
   BuildContext? pageContext;
 
   @protected
+  void changeBaseDeviceWidth(double aNewWidth) => AiDisplayAreaModel.displayWidth = aNewWidth;
+
+  @protected
+  void changeBaseDeviceHeight(double aNewHeight) => AiDisplayAreaModel.displayHeight = aNewHeight;
+
+  @protected
   Widget internalBuild(BuildContext context) {
     return Container();
   }
@@ -40,6 +46,12 @@ abstract class AiBaseState<Page extends AiBaseStatefulWidget> extends State<Page
   double get dvHeight => AiDisplayAreaModel.displayHeight;
   Size? get dvSize => AiDisplayAreaModel.displaySize;
   BuildContext? pageContext;
+
+  @protected
+  void changeBaseDeviceWidth(double aNewWidth) => AiDisplayAreaModel.displayWidth = aNewWidth;
+
+  @protected
+  void changeBaseDeviceHeight(double aNewHeight) => AiDisplayAreaModel.displayHeight = aNewHeight;
 
   @override
   void initState() {
