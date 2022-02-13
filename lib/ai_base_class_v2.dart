@@ -9,6 +9,7 @@ library ai_base_class_v2;
 // Export base classes
 export './src/models/ai_base_model.dart';
 export './src/models/ai_api_provider.dart';
+export './src/models/ai_display_area_model.dart';
 export './src/pages/ai_base_page.dart';
 
 // Export constants
