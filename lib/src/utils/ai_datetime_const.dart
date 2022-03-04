@@ -7,6 +7,8 @@ const kThaiWeekDayNameMap = {1: "วันจันทร์", 2: "วันอ�
 const kThaiWeekDayShortNameMap = {1: "จ.", 2: "อ.", 3: "พ.", 4: "พฤ.", 5: "ศ.", 6: "ส.", 7: "อา."};
 enum WeekDayName { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday }
 
+final DateTime kDefaultDateTime = DateTime(-1);
+
 const kThaiMonthNameMap = {
   1: "มกราคม",
   2: "กุมภาพันธ์",
