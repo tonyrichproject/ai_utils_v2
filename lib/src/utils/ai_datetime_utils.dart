@@ -25,6 +25,10 @@ String getThaiDateFormat(DateTime aDateTime) {
   return DateFormat('d MMMM yyyy', 'th').format(getThaiDateTime(aDateTime));
 }
 
+String getThaiDateShortFormat(DateTime aDateTime) {
+  return DateFormat('d MM yy', 'th').format(getThaiDateTime(aDateTime));
+}
+
 int getThaiYear(DateTime aDateTime) => aDateTime.year + dateCons.kThaiYearOffset;
 
 int getThaiYearByGlobalYear(int aYear) => aYear + dateCons.kThaiYearOffset;
