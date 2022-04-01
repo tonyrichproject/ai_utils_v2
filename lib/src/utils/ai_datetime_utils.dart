@@ -26,7 +26,11 @@ String getThaiDateFormat(DateTime aDateTime) {
 }
 
 String getThaiDateShortFormat(DateTime aDateTime) {
-  return DateFormat('d MM yy', 'th').format(getThaiDateTime(aDateTime));
+  return DateFormat('d MMM yy', 'th').format(getThaiDateTime(aDateTime));
+}
+
+String getThaiShortWeekDayNameFromDate(DateTime aDateTime) {
+  return getThaiWeekDayShortName(aDateTime.weekday);
 }
 
 int getThaiYear(DateTime aDateTime) => aDateTime.year + dateCons.kThaiYearOffset;
