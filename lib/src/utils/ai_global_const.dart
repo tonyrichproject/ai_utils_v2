@@ -1,11 +1,11 @@
 const kFullCurrencyFormat = '#,###.00';
 const kDecimalFormat = '#,###';
 
-const kEmptyStringList = <String>[];
-const kEmptyIntList = <int>[];
-const kEmptyDoubleList = <double>[];
-const kEmptyDateTimeList = <DateTime>[];
-const kEmptyDynamicList = <dynamic>[];
+const List<String> kEmptyStringList = [];
+const List<int> kEmptyIntList = [];
+const List<double> kEmptyDoubleList = [];
+const List<DateTime> kEmptyDateTimeList = [];
+const List<dynamic> kEmptyDynamicList = [];
 
-const kUnknownLatitude = -100;
-const kUnknownLongitude = -100;
+const double kUnknownLatitude = -100.0;
+const double kUnknownLongitude = -100.0;
