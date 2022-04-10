@@ -28,6 +28,20 @@ String safeValueAsStr(dynamic aValue, {String aDefaultValue = ''}) {
 
 int safeValueAsInt(dynamic aValue, {int aDefaultValue = 0}) {
   int result = aDefaultValue;
+  if (assigned(aValue)) {
+    if (aValue is int)
+      result = aValue;
+    else {
+      try {
+        // if (aValue is String)
+        //   result = int.parse(aValue.trim());
+        // else
+        if (aValue is double) result = aValue.floor();
+      } catch (error) {
+        print('Safe value as int error with message : ${error.toString()}');
+      }
+    }
+  }
   return result;
 }
 
