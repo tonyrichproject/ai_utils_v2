@@ -12,7 +12,11 @@ String safeValueAsStr(dynamic aValue, {String aDefaultValue = ''}) {
       result = aValue;
     else {
       try {
-        aValue.toString();
+        if (aValue is int)
+          result = aValue.toString();
+        else if (aValue is double)
+          result = aValue.toString();
+        else if (aValue is DateTime) result = aValue.toString();
       } catch (error) {
         print('Safe value as string error with message : ${error.toString()}');
         // throw error;
