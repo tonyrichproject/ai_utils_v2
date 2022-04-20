@@ -7,6 +7,9 @@ bool isAvailable(AiBaseItem aObject) => (assigned(aObject) && aObject.isNotEmpty
 
 String safeValueAsStr(dynamic aValue, {String aDefaultValue = ''}) {
   String result = aDefaultValue;
+
+  if (aValue == null) return result;
+
   try {
     if (aValue is String)
       result = aValue;
@@ -43,6 +46,9 @@ String safeValueAsStr(dynamic aValue, {String aDefaultValue = ''}) {
 
 int safeValueAsInt(dynamic aValue, {int aDefaultValue = 0}) {
   int result = aDefaultValue;
+
+  if (aValue == null) return result;
+
   try {
     if (aValue is int)
       result = aValue;
@@ -75,6 +81,9 @@ int safeValueAsInt(dynamic aValue, {int aDefaultValue = 0}) {
 
 double safeValueAsDouble(dynamic aValue, {double aDefaultValue = 0.0}) {
   double result = aDefaultValue;
+
+  if (aValue == null) return result;
+
   try {
     if (aValue is double)
       result = aValue;
@@ -93,6 +102,9 @@ double safeValueAsDouble(dynamic aValue, {double aDefaultValue = 0.0}) {
 
 DateTime safeValueAsDateTime(dynamic aValue, {DateTime? aDefaultValue}) {
   DateTime result = kDefaultDateTime;
+
+  if (aValue == null) return result;
+
   try {
     if (aValue is DateTime)
       result = aValue;
