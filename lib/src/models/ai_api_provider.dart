@@ -23,6 +23,12 @@ class AiBasicApiProvider extends AiBasicItem {
     return await http.post(Uri.parse(aUrl), headers: aHeaders, body: json.encode(aPostBody));
   }
 
+
+  @protected
+  Future<dynamic> deleteDataToAPI(String aUrl, Map<String, String> aHeaders) async {
+    return await http.delete(Uri.parse(aUrl), headers: aHeaders);
+  }
+
   String get apiEndPoint => internalGetApiEndPoint();
   Map<String, String> get apiHeaders => internalGetApiHeaders();
 }
